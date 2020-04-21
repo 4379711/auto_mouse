@@ -185,14 +185,17 @@ class Tasks:
                 cls.move_mouse(x_, y_)
                 cls.task_click()
                 cls.task_key()
-            else:
-                time.sleep(1)
-                return task_(x_, y_)
+                return 1
 
         while True:
             for y in range(150, height - 150, 50):
                 for x in range(150, width - 150, 50):
-                    task_(x, y)
+                    while True:
+                        result = task_(x, y)
+                        if result:
+                            break
+                        else:
+                            time.sleep(0.5)
 
     @staticmethod
     def task_key():
