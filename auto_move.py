@@ -11,6 +11,8 @@ import win32con
 import ctypes
 import ctypes.wintypes
 
+from utils import BaseConfig
+
 
 class HotKey(Thread):
     user32 = ctypes.windll.user32
@@ -175,6 +177,11 @@ class Tasks:
 
     @classmethod
     def task(cls):
+        config = BaseConfig()
+        if not config.is_exist:
+            config.write_config()
+        top, bottom, left, right, speed = config.read_config()
+
         pyautogui.FAILSAFE = False
         width, height = pyautogui.size()
 
@@ -188,8 +195,8 @@ class Tasks:
                 return 1
 
         while True:
-            for y in range(150, height - 150, 50):
-                for x in range(150, width - 150, 50):
+            for y in range(top, height - bottom, speed):
+                for x in range(left, width - right, speed):
                     while True:
                         result = task_(x, y)
                         if result:
@@ -199,7 +206,7 @@ class Tasks:
 
     @staticmethod
     def task_key():
-        pyautogui.press(['F', 'u', 'c', 'k', '!', 'space'], interval=0.5)
+        pyautogui.press(['enter'], interval=0.5)
         time.sleep(0.5)
 
     @staticmethod
